@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 452972095}
+      - m_Target: {fileID: 452972094}
         m_TargetAssemblyTypeName: MainGameController, Assembly-CSharp
-        m_MethodName: StartGame
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 388247367}
   - component: {fileID: 388247369}
   m_Layer: 5
-  m_Name: TxtPontuacao
+  m_Name: GameOverScore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -412,26 +412,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 452972096}
-  - component: {fileID: 452972095}
+  - component: {fileID: 452972097}
   m_Layer: 0
-  m_Name: LoadGame
+  m_Name: RestartGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &452972095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 452972094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b50c5a52d8c2ad510979c08f84638495, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &452972096
 Transform:
   m_ObjectHideFlags: 0
@@ -447,6 +435,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &452972097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452972094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e0acc5f9528f917a65f5282acae3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &636034062
 GameObject:
   m_ObjectHideFlags: 0

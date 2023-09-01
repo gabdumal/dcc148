@@ -11,11 +11,13 @@ public class PlayerController : MonoBehaviour
     public float gravity = 50;
 
     private float vy;
+    private TMP_Text scoreText;
 
     // Start is called before the first frame update
     void Start()
     {
         vy = 0;
+        scoreText = GameObject.Find("InGameScore").GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame
@@ -24,17 +26,18 @@ public class PlayerController : MonoBehaviour
         Vector2 pos = transform.position;
 
         float vx = Input.GetAxis("Horizontal") * xSpeed;
-        
+
         vy -= gravity * Time.fixedDeltaTime;
-    
+
         Vector2 v = new Vector2(vx, vy);
         pos += v * Time.fixedDeltaTime;
 
-        if(pos.y < -4)
+        if (pos.y < -4)
         {
             pos.y = -4;
             vy = impulse;
             score++;
+            scoreText.text = score.ToString();
         }
 
         transform.position = pos;
