@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     private float vy;
     private TMP_Text scoreText;
+    private int MAX_X = 8;
+    private int MAX_Y = 4;
 
     // Start is called before the first frame update
     void Start()
@@ -32,14 +34,27 @@ public class PlayerController : MonoBehaviour
         Vector2 v = new Vector2(vx, vy);
         pos += v * Time.fixedDeltaTime;
 
-        if (pos.y < -4)
+        if (pos.y < -MAX_Y)
         {
-            pos.y = -4;
+            pos.y = -MAX_Y;
             vy = impulse;
             score++;
             scoreText.text = score.ToString();
         }
+        if (pos.x < -MAX_X)
+        {
+            pos.x = -MAX_X;
+        }
+        else if (pos.x > MAX_X)
+        {
+            pos.x = MAX_X;
+        }
 
         transform.position = pos;
+    }
+
+    void OnDisable()
+    {
+        PlayerPrefs.SetInt("Score", score);
     }
 }
