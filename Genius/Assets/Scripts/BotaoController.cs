@@ -12,7 +12,6 @@ public class BotaoController : MonoBehaviour
     private bool isCoroutineExecuting = false;
     private const float LIGHT_Z = 2.25f;
 
-
     // Start is called before the first frame update
     void Start()
     {

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class Player2Controller : MonoBehaviour
 {
 
     public float playerSpeed = 2f;
@@ -10,6 +12,9 @@ public class PlayerController : MonoBehaviour
     public GameObject enemy;
 
     [SerializeField] private Vector2 playerDirection;
+    private int enemyIsInFrontOfPlayer = 1;
+    private float minimumHuntingDistance = 3f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,13 +25,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int enemyDirection = 1;
+        // If the enemy is in front of the player, invert the direction of its movement
         if (enemy.transform.position.x < this.transform.position.x)
-            enemyDirection = -1;
+            enemyIsInFrontOfPlayer = -1;
 
+        // Move the player based on input
         float dx = Input.GetAxis("Horizontal");
         transform.Translate(Time.deltaTime * dx * playerSpeed, 0, 0, Space.World);
 
+        // Update player rotation to match its direction
         if (dx > 0)
         {
             playerDirection.x = 1;
@@ -38,9 +45,9 @@ public class PlayerController : MonoBehaviour
             transform.eulerAngles = Vector3.forward * 90;
         }
 
-        if (Vector2.Dot(enemyDirection * playerDirection, Vector2.left) == 1)
-        {
+        // If player is not facing the enemy and it's in a minimum distance, it moves toward the player
+        if (Vector2.Dot(enemyIsInFrontOfPlayer * playerDirection, Vector2.left) == 1
+            && Math.Abs(enemy.transform.position.x - this.transform.position.x) < minimumHuntingDistance)
             enemy.transform.Translate(Time.deltaTime * enemySpeed * playerDirection, Space.World);
-        }
     }
 }
