@@ -8,10 +8,12 @@ public class EnemyGeneratorController : MonoBehaviour
 
     public GameObject horizontalEnemyPrefab;
     public GameObject sineEnemyPrefab;
+    public GameObject depthEnemyPrefab;
     public int eachEnemyPoolSize;
     public int maxGenerationTime;
     private ObjectPool horizontalEnemyPool;
     private ObjectPool sineEnemyPool;
+    private ObjectPool depthEnemyPool;
     private float maxX = 8.5f;
     private float maxY = 4f;
     private int remainingTime;
@@ -21,6 +23,7 @@ public class EnemyGeneratorController : MonoBehaviour
     {
         this.horizontalEnemyPool = new ObjectPool(horizontalEnemyPrefab, eachEnemyPoolSize);
         this.sineEnemyPool = new ObjectPool(sineEnemyPrefab, eachEnemyPoolSize);
+        this.depthEnemyPool = new ObjectPool(depthEnemyPrefab, eachEnemyPoolSize);
         this.remainingTime = this.maxGenerationTime;
     }
 
@@ -29,11 +32,13 @@ public class EnemyGeneratorController : MonoBehaviour
     {
         if (remainingTime == 0)
         {
-            float randomEnemyTipe = UnityEngine.Random.Range(0, 2);
+            float randomEnemyTipe = UnityEngine.Random.Range(0, 3);
             Vector3 randomPosition = this.getRandomPosition();
             GameObject newEnemy;
             if (randomEnemyTipe == 0)
+            {
                 newEnemy = this.horizontalEnemyPool.GetFromPool();
+            }
             else if (randomEnemyTipe == 1)
             {
                 newEnemy = this.sineEnemyPool.GetFromPool();
@@ -41,8 +46,7 @@ public class EnemyGeneratorController : MonoBehaviour
             }
             else
             {
-                newEnemy = this.sineEnemyPool.GetFromPool();
-                newEnemy.GetComponent<SineEnemyController>().initialYPosition = randomPosition.y;
+                newEnemy = this.depthEnemyPool.GetFromPool();
             }
             newEnemy.transform.position = randomPosition;
             remainingTime = maxGenerationTime + 1;
