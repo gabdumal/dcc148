@@ -245,7 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontalEnemyPrefab: {fileID: 6225285886381545175, guid: 6fe39695757cfc5339a21c8afad6fd75, type: 3}
-  eachEnemyPoolSize: 4
+  sineEnemyPrefab: {fileID: 7928885175737550396, guid: 90001e57ac37bbe4b95230da5960ad0b, type: 3}
+  eachEnemyPoolSize: 3
   maxGenerationTime: 120
 --- !u!4 &740300427
 Transform:
@@ -361,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3af6dd3e6a6e33981a284cb1a7b292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerYSpeed: 3.5
+  playerYSpeed: 5
   shootPrefab: {fileID: 4119292429829257804, guid: 0b4c90d5ce0193ce5ab4d1b886107723, type: 3}
   shootPoolSize: 16
 --- !u!50 &1519768805

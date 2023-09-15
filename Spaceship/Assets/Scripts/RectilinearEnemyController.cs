@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HorizontalEnemyController : MonoBehaviour
+public class RectilinearEnemyController : MonoBehaviour
 {
 
-    public float enemyXSpeed = 4f;
+    public float enemyXSpeed;
     private float maxX = 8.5f;
 
     // Start is called before the first frame update
@@ -28,7 +28,5 @@ public class HorizontalEnemyController : MonoBehaviour
             UnityEditor.EditorApplication.isPlaying = false;
         }
     }
-
-
 
 }

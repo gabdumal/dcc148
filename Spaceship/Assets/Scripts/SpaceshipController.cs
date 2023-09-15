@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpaceshipController : MonoBehaviour
 {
 
-    public float playerYSpeed = 3.5f;
+    public float playerYSpeed;
     public GameObject shootPrefab;
     public int shootPoolSize;
     private ObjectPool shootPool;
@@ -20,7 +20,7 @@ public class SpaceshipController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float inputYOffset = Input.GetAxis("Horizontal");
+        float inputYOffset = -Input.GetAxis("Horizontal");
         Vector3 movement = new Vector3(0, inputYOffset * playerYSpeed, 0);
         movement *= Time.fixedDeltaTime;
         Vector3 newPosition = this.transform.position + movement;

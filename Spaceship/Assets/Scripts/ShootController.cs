@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootController : MonoBehaviour
 {
 
-    public float shootXSpeed = 6f;
+    public float shootXSpeed;
     private float maxX = 8.5f;
 
     // Start is called before the first frame update
