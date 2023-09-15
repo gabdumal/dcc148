@@ -23,6 +23,6 @@ public class ShootController : MonoBehaviour
         if (newPosition.x < maxX)
             this.transform.position = newPosition;
         else
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
     }
 }

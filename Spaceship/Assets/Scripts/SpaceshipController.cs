@@ -7,12 +7,14 @@ public class SpaceshipController : MonoBehaviour
 
     public float playerYSpeed = 3.5f;
     public GameObject shootPrefab;
+    public int shootPoolSize;
+    private ObjectPool shootPool;
     private float maxY = 4f;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        this.shootPool = new ObjectPool(shootPrefab, shootPoolSize);
     }
 
     // Update is called once per frame
@@ -29,7 +31,8 @@ public class SpaceshipController : MonoBehaviour
             bool spacePressed = Input.GetKeyDown(KeyCode.Space);
             if (spacePressed)
             {
-                Instantiate(shootPrefab, newPosition, Quaternion.Euler(0, 0, 0));
+                GameObject newShoot = this.shootPool.GetFromPool();
+                newShoot.transform.position = newPosition;
             }
         }
     }
