@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootController : MonoBehaviour
+public class HorizontalEnemyController : MonoBehaviour
 {
 
-    public float shootXSpeed = 6f;
+    public float enemyXSpeed = 4f;
     private float maxX = 8.5f;
 
     // Start is called before the first frame update
@@ -17,18 +17,18 @@ public class ShootController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(shootXSpeed, 0, 0);
+        Vector3 movement = new Vector3(-enemyXSpeed, 0, 0);
         movement *= Time.fixedDeltaTime;
         Vector3 newPosition = this.transform.position + movement;
-        if (newPosition.x < maxX)
+        if (newPosition.x > -maxX)
             this.transform.position = newPosition;
         else
-            this.gameObject.SetActive(false);
+        {
+            Application.Quit();
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
     }
 
-    void OnCollisionEnter2D(Collision2D enemy)
-    {
-        enemy.gameObject.SetActive(false);
-        this.gameObject.SetActive(false);
-    }
+
+
 }

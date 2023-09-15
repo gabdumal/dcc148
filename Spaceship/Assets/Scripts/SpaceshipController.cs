@@ -32,8 +32,14 @@ public class SpaceshipController : MonoBehaviour
             if (spacePressed)
             {
                 GameObject newShoot = this.shootPool.GetFromPool();
-                newShoot.transform.position = newPosition;
+                newShoot.transform.position = new Vector3(this.transform.position.x + 1f, newPosition.y, 0);
             }
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D enemy)
+    {
+        Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }
