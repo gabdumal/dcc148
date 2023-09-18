@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 1519768806}
   m_Layer: 0
   m_Name: Spaceship
-  m_TagString: Untagged
+  m_TagString: Spaceship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -364,6 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerYSpeed: 5
+  rotationSpeed: 2
   shootPrefab: {fileID: 4119292429829257804, guid: 0b4c90d5ce0193ce5ab4d1b886107723, type: 3}
   shootPoolSize: 16
 --- !u!50 &1519768805

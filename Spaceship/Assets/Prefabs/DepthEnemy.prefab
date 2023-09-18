@@ -178,6 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyXSpeed: 3
-  minimumSize: 0.25
+  minimumSize: 0.5
   depthSpeed: 0.7
   depthConstant: 0.5

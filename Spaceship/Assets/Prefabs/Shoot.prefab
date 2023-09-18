@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1058861131155059479}
   m_Layer: 0
   m_Name: Shoot
-  m_TagString: Untagged
+  m_TagString: SpaceshipShoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c507cf174a826f7b873ef12884bee6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootXSpeed: 12
+  shootSpeed: 6
+  direction: {x: 1, y: 0, z: 0}
 --- !u!50 &5918020138199334926
 Rigidbody2D:
   serializedVersion: 4
