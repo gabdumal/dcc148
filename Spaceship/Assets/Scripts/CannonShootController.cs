@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootController : MonoBehaviour
+public class CannonShootController : MonoBehaviour
 {
-
     public float shootSpeed;
     public Vector3 direction;
     private float maxX = 8.5f;
@@ -29,10 +28,12 @@ public class ShootController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag != "Spaceship")
+        if (collision.gameObject.tag == "Spaceship")
         {
             collision.gameObject.SetActive(false);
             this.gameObject.SetActive(false);
+            Application.Quit();
+            UnityEditor.EditorApplication.isPlaying = false;
         }
     }
 }

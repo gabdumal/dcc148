@@ -5,11 +5,12 @@ using UnityEngine;
 public class SpaceshipController : MonoBehaviour
 {
 
+    public float playerXSpeed;
     public float playerYSpeed;
-    public float rotationSpeed;
     public GameObject shootPrefab;
     public int shootPoolSize;
     private ObjectPool shootPool;
+    private float maxX = 8.5f;
     private float maxY = 4f;
 
     // Start is called before the first frame update
@@ -21,19 +22,20 @@ public class SpaceshipController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        float inputXOffset = Input.GetAxis("Horizontal");
         float inputYOffset = Input.GetAxis("Vertical");
-        float inputRotationOffset = -Input.GetAxis("Horizontal");
+        float inputRotationOffset = -Input.GetAxis("Rotation");
 
-        Vector3 movement = new Vector3(0, inputYOffset * playerYSpeed, 0);
+        Vector3 movement = new Vector3(inputXOffset * playerXSpeed, inputYOffset * playerYSpeed, 0);
         movement *= Time.fixedDeltaTime;
         Vector3 newPosition = this.transform.position + movement;
 
-        float rotationAngle = inputRotationOffset * rotationSpeed;
-        float newRotationZ = rotationAngle * 30 - 90;
-        Vector3 rotation = new Vector3(0, 0, newRotationZ);
+        float newRotationZ = inputRotationOffset * 45;
+        Vector3 rotation = new Vector3(0, 0, newRotationZ - 90);
         this.transform.rotation = Quaternion.Euler(rotation);
 
-        if (newPosition.y > -maxY && newPosition.y < maxY)
+        if (newPosition.y > -maxY && newPosition.y < maxY && newPosition.x > -maxX && newPosition.x < maxX
+        )
         {
             this.transform.position = newPosition;
 

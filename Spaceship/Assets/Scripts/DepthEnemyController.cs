@@ -19,13 +19,15 @@ public class DepthEnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 movement = new Vector3(-enemyXSpeed, 0, 0);
         movement *= Time.fixedDeltaTime;
         Vector3 newPosition = this.transform.position + movement;
+
         float depthValue = Math.Max((Mathf.Sin(Time.time * depthSpeed) + 1) * depthConstant, minimumSize);
         Vector3 depth = new Vector3(depthValue, depthValue, depthValue);
+
         if (newPosition.x > -maxX)
         {
             this.transform.position = newPosition;
