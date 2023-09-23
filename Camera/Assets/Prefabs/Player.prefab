@@ -98,5 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xSpeed: 6
+  yImpulse: 14
+  gravity: 30
   playerXLimit: 30
-  playerHalfWidth: 0
+  playerYBottomLimit: -5.25

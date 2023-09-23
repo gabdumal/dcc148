@@ -6,8 +6,13 @@ public class PlayerController : MonoBehaviour
 {
 
     public float xSpeed;
+    public float yImpulse;
+    public float gravity;
     public float playerXLimit;
-    [SerializeField] private float playerHalfWidth;
+    public float playerYBottomLimit;
+
+    private float playerHalfWidth;
+    private float ySpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +26,27 @@ public class PlayerController : MonoBehaviour
         float inputXOffset = Input.GetAxis("Horizontal");
         float realXOffset = inputXOffset * Time.fixedDeltaTime * this.xSpeed;
         float newXPosition = this.transform.position.x + realXOffset;
-        if ((newXPosition + playerHalfWidth) < playerXLimit && (newXPosition - playerHalfWidth) > -playerXLimit)
+
+        bool spacePressed = Input.GetKeyDown(KeyCode.Space);
+        if (spacePressed && this.ySpeed == 0)
+            this.ySpeed += this.yImpulse;
+
+        this.ySpeed -= gravity * Time.fixedDeltaTime;
+        float realYOffset = ySpeed * Time.fixedDeltaTime;
+        float newYPosition = this.transform.position.y + realYOffset;
+
+        if (!((newXPosition + playerHalfWidth) < playerXLimit && (newXPosition - playerHalfWidth) > -playerXLimit))
         {
-            Vector3 movement = new Vector3(realXOffset, 0, 0);
-            this.transform.Translate(movement);
+            realXOffset = 0;
         }
+
+        if (newYPosition < this.playerYBottomLimit)
+        {
+            realYOffset = 0;
+            this.ySpeed = 0;
+        }
+
+        Vector3 movement = new Vector3(realXOffset, realYOffset, 0);
+        this.transform.Translate(movement);
     }
 }
