@@ -261,7 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1814100930}
   xSpeed: 3
-  cameraType: 4
+  cameraType: 5
   leftEdge: {fileID: 15625026}
   rightEdge: {fileID: 1870972591}
   halfHeight: 0
@@ -269,6 +269,9 @@ MonoBehaviour:
   cameraLeftMargin: 0
   cameraRightMargin: 0
   section: 0
+  boxLeftMargin: 0
+  boxRightMargin: 0
+  cameraOffsetX: 0
 --- !u!4 &1814100930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1309693916518336516, guid: e1dd127480432680c87de784f704e6af, type: 3}

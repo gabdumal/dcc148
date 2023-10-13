@@ -26,6 +26,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float cameraLeftMargin;
     [SerializeField] private float cameraRightMargin;
     [SerializeField] private float section;
+    [SerializeField] private float boxLeftMargin;
+    [SerializeField] private float boxRightMargin;
+    [SerializeField] private float cameraOffsetX;
     private float playerHalfWidth;
     private float cameraTransitionAux = 0;
 
@@ -141,6 +144,30 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    void MoveBoxBehaviour()
+    {
+        this.cameraLeftMargin = this.transform.position.x - this.halfWidth;
+        this.boxLeftMargin = cameraLeftMargin + this.halfWidth * 0.5f;
+        this.boxRightMargin = cameraLeftMargin + this.halfWidth * 1.5f;
+
+        this.cameraOffsetX = 0;
+        if (player.position.x < boxLeftMargin)
+        {
+            cameraOffsetX = player.position.x - boxLeftMargin;
+        }
+        else if (player.position.x > boxRightMargin)
+        {
+            cameraOffsetX = player.position.x - boxRightMargin;
+        }
+
+        float newXPosition = Mathf.Clamp(
+            this.transform.position.x + cameraOffsetX,
+            this.leftEdge.position.x + this.halfWidth,
+            this.rightEdge.position.x - this.halfWidth
+        );
+        this.transform.position = new Vector3(newXPosition, this.transform.position.y, this.transform.position.z);
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
@@ -151,7 +178,7 @@ public class CameraController : MonoBehaviour
             case CameraType.FollowPlayer: CenteredBehaviour(); break;
             case CameraType.CameraJump: JumpingBehaviour(); break;
             case CameraType.SmoothJump: SmoothJumpingBehaviour(); break;
-                // case CameraType.BoxCentered: MoveBoxBehaviour(); break;
+            case CameraType.BoxCentered: MoveBoxBehaviour(); break;
         }
     }
 }
