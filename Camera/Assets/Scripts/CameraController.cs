@@ -25,7 +25,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float halfWidth;
     [SerializeField] private float cameraLeftMargin;
     [SerializeField] private float cameraRightMargin;
+    [SerializeField] private float section;
     private float playerHalfWidth;
+    private float cameraTransitionAux = 0;
 
 
     // Start is called before the first frame update
@@ -98,6 +100,47 @@ public class CameraController : MonoBehaviour
         transform.position = newPosition;
     }
 
+    void JumpingBehaviour()
+    {
+        int currentSection = Mathf.FloorToInt((player.position.x - leftEdge.position.x) / (2 * this.halfWidth));
+        if (currentSection != this.section)
+        {
+            this.section = currentSection;
+            float newXPosition = Mathf.Clamp(
+                leftEdge.position.x + this.halfWidth + 2 * this.section * this.halfWidth,
+                this.leftEdge.position.x + this.halfWidth,
+                this.rightEdge.position.x - this.halfWidth
+            );
+            this.transform.position = new Vector3(newXPosition, this.transform.position.y, this.transform.position.z);
+        }
+    }
+
+    void SmoothJumpingBehaviour()
+    {
+        int currentSection = Mathf.FloorToInt((player.position.x - leftEdge.position.x) / (2 * this.halfWidth));
+        if (currentSection != this.section)
+        {
+            float initialPos = leftEdge.position.x + halfWidth + 2 * this.section * halfWidth;
+            float finalPos = leftEdge.position.x + halfWidth + 2 * currentSection * halfWidth;
+
+            float smoothX = Mathf.Lerp(initialPos, finalPos, cameraTransitionAux);
+            cameraTransitionAux += 2 * Time.deltaTime;
+
+            if (cameraTransitionAux >= 1)
+            {
+                this.section += currentSection - this.section;
+                cameraTransitionAux = 0;
+            }
+
+            float newXPosition = Mathf.Clamp(
+                smoothX,
+                this.leftEdge.position.x + this.halfWidth,
+                this.rightEdge.position.x - this.halfWidth
+            );
+            this.transform.position = new Vector3(newXPosition, this.transform.position.y, this.transform.position.z);
+        }
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
@@ -106,8 +149,8 @@ public class CameraController : MonoBehaviour
             case CameraType.ContinuousKiller: ScrollingBehaviour(CameraType.ContinuousKiller); break;
             case CameraType.ContinuousForce: ScrollingBehaviour(CameraType.ContinuousForce); break;
             case CameraType.FollowPlayer: CenteredBehaviour(); break;
-                // case CameraType.CameraJump: JumpingBehaviour(); break;
-                // case CameraType.SmoothJump: SmoothJumpingBehaviour(); break;
+            case CameraType.CameraJump: JumpingBehaviour(); break;
+            case CameraType.SmoothJump: SmoothJumpingBehaviour(); break;
                 // case CameraType.BoxCentered: MoveBoxBehaviour(); break;
         }
     }
