@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public enum MovementType
+{
+    NonContinuous,
+    Continuous
+}
+
 public class KnightController : MonoBehaviour
 {
-
-    // public float xSpeed;
-    public float tileSize;
-    public Grid grid;
+    public MovementType movementType;
+    public float xSpeed;
+    public float ySpeed;
     public int movingAnimationTime;
     private int movingRemainingTime = 0;
+    public Grid grid;
     [SerializeField] private Tilemap groundTilemap;
     [SerializeField] private Tilemap buildingsTilemap;
 
 
-    private void setPlayerPosition(Vector3 cellPosition)
+    private void SetPlayerPosition(Vector3 cellPosition)
     {
         this.transform.position = new Vector3(
             cellPosition.x + grid.cellSize.x / 2,
@@ -23,7 +29,7 @@ public class KnightController : MonoBehaviour
             cellPosition.z);
     }
 
-    private void fixedCellMoving()
+    private void NonContinuousMovement()
     {
         bool moveToRight = Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow);
         bool moveToLeft = Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow);
@@ -42,7 +48,25 @@ public class KnightController : MonoBehaviour
             && nextCellPosition.y > this.groundTilemap.cellBounds.yMin
             && nextCellPosition.y < this.groundTilemap.cellBounds.yMax
             )
-            this.setPlayerPosition(nextCellPosition);
+            this.SetPlayerPosition(nextCellPosition);
+    }
+
+    private void ContinuousMovement()
+    {
+        if (this.movingRemainingTime > 0)
+            this.movingRemainingTime--;
+
+        float inputXOffset = Input.GetAxis("Horizontal");
+        float inputYOffset = Input.GetAxis("Vertical");
+        float realXOffset = inputXOffset * Time.fixedDeltaTime * this.xSpeed;
+        float realYOffset = inputYOffset * Time.fixedDeltaTime * this.ySpeed;
+        float xDisplacement = this.grid.cellSize.x * inputXOffset;
+        float yDisplacement = this.grid.cellSize.y * inputYOffset;
+        this.transform.Translate(xDisplacement, yDisplacement, 0);
+
+        // Vector3 worldToCell = grid.WorldToCell(this.transform.position);
+        // Debug.Log(worldToCell);
+
     }
 
     // Start is called before the first frame update
@@ -63,32 +87,15 @@ public class KnightController : MonoBehaviour
             }
         }
         Vector3 currentCellPosition = grid.WorldToCell(this.transform.position);
-        this.setPlayerPosition(currentCellPosition);
+        this.SetPlayerPosition(currentCellPosition);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (this.movingRemainingTime > 0)
-        {
-            this.movingRemainingTime--;
-        }
-
-        // float inputXOffset = Input.GetAxis("Horizontal");
-        // float inputYOffset = Input.GetAxis("Vertical");
-        this.fixedCellMoving();
-
-        // // float realXOffset = inputXOffset * Time.fixedDeltaTime * this.xSpeed;
-        // float xDisplacement = tileSize * inputXOffset;
-
-        // float inputYOffset = Input.GetAxis("Vertical");
-        // // float realXOffset = inputXOffset * Time.fixedDeltaTime * this.xSpeed;
-        // float yDisplacement = tileSize * inputYOffset;
-
-        // this.transform.Translate(xDisplacement, yDisplacement, 0);
-
-        // Vector3 worldToCell = grid.WorldToCell(this.transform.position);
-        // Debug.Log(worldToCell);
-
+        if (this.movementType == MovementType.NonContinuous)
+            this.NonContinuousMovement();
+        else if (this.movementType == MovementType.Continuous)
+            this.ContinuousMovement();
     }
 }

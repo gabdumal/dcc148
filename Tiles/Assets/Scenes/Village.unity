@@ -2733,9 +2733,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55016b58619a66e0d891203ded582f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSize: 1
-  grid: {fileID: 761167173}
+  movementType: 0
+  xSpeed: 0
+  ySpeed: 0
   movingAnimationTime: 5
+  grid: {fileID: 761167173}
+  groundTilemap: {fileID: 0}
+  buildingsTilemap: {fileID: 0}
 --- !u!212 &1503091157
 SpriteRenderer:
   m_ObjectHideFlags: 0
