@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class KnightController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class KnightController : MonoBehaviour
     public Grid grid;
     public int movingAnimationTime;
     private int movingRemainingTime = 0;
+    [SerializeField] private Tilemap groundTilemap;
+    [SerializeField] private Tilemap buildingsTilemap;
 
 
     private void setPlayerPosition(Vector3 cellPosition)
@@ -33,13 +36,32 @@ public class KnightController : MonoBehaviour
             currentCellPosition.x + grid.cellSize.x * horizontalDisplacement,
             currentCellPosition.y + grid.cellSize.y * verticalDisplacement,
             currentCellPosition.z);
-        
-        this.setPlayerPosition(nextCellPosition);
+
+        if (nextCellPosition.x >= this.groundTilemap.cellBounds.xMin
+            && nextCellPosition.x < this.groundTilemap.cellBounds.xMax
+            && nextCellPosition.y > this.groundTilemap.cellBounds.yMin
+            && nextCellPosition.y < this.groundTilemap.cellBounds.yMax
+            )
+            this.setPlayerPosition(nextCellPosition);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        Tilemap[] tilemaps = grid.GetComponentsInChildren<Tilemap>();
+        foreach (var tilemap in tilemaps)
+        {
+            if (tilemap.name == "Ground")
+            {
+                this.groundTilemap = tilemap;
+                continue;
+            }
+            if (tilemap.name == "Buildings")
+            {
+                this.buildingsTilemap = tilemap;
+                continue;
+            }
+        }
         Vector3 currentCellPosition = grid.WorldToCell(this.transform.position);
         this.setPlayerPosition(currentCellPosition);
     }
