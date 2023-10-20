@@ -2734,6 +2734,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSize: 1
+  grid: {fileID: 761167173}
+  movingAnimationTime: 5
 --- !u!212 &1503091157
 SpriteRenderer:
   m_ObjectHideFlags: 0
