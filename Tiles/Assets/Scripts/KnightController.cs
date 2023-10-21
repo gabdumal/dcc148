@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,12 +15,30 @@ public class KnightController : MonoBehaviour
     public MovementType movementType;
     public float xSpeed;
     public float ySpeed;
-    public int movingAnimationTime;
-    private int movingRemainingTime = 0;
     public Grid grid;
-    [SerializeField] private Tilemap groundTilemap;
-    [SerializeField] private Tilemap buildingsTilemap;
+    public Tilemap groundTilemap;
+    public Tilemap buildingsTilemap;
+    private bool isMoving = false;
+    private Vector3 nextCellPosition;
+    // [SerializeField] BoundsInt groundBounds;
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        Vector3 currentCellPosition = grid.WorldToCell(this.transform.position);
+        this.SetPlayerPosition(currentCellPosition);
+        this.nextCellPosition = currentCellPosition;
+        // this.groundBounds = this.groundTilemap.cellBounds;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (this.movementType == MovementType.NonContinuous)
+            this.NonContinuousMovement();
+        else if (this.movementType == MovementType.Continuous)
+            this.ContinuousMovement();
+    }
 
     private void SetPlayerPosition(Vector3 cellPosition)
     {
@@ -46,56 +65,59 @@ public class KnightController : MonoBehaviour
         if (nextCellPosition.x >= this.groundTilemap.cellBounds.xMin
             && nextCellPosition.x < this.groundTilemap.cellBounds.xMax
             && nextCellPosition.y > this.groundTilemap.cellBounds.yMin
-            && nextCellPosition.y < this.groundTilemap.cellBounds.yMax
-            )
+            && nextCellPosition.y < this.groundTilemap.cellBounds.yMax)
             this.SetPlayerPosition(nextCellPosition);
     }
 
     private void ContinuousMovement()
     {
-        if (this.movingRemainingTime > 0)
-            this.movingRemainingTime--;
-
+        if (!this.isMoving)
+        {
+            this.SetPlayerPosition(this.nextCellPosition);
+        }
         float inputXOffset = Input.GetAxis("Horizontal");
         float inputYOffset = Input.GetAxis("Vertical");
-        float realXOffset = inputXOffset * Time.fixedDeltaTime * this.xSpeed;
-        float realYOffset = inputYOffset * Time.fixedDeltaTime * this.ySpeed;
-        float xDisplacement = this.grid.cellSize.x * inputXOffset;
-        float yDisplacement = this.grid.cellSize.y * inputYOffset;
-        this.transform.Translate(xDisplacement, yDisplacement, 0);
-
-        // Vector3 worldToCell = grid.WorldToCell(this.transform.position);
-        // Debug.Log(worldToCell);
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Tilemap[] tilemaps = grid.GetComponentsInChildren<Tilemap>();
-        foreach (var tilemap in tilemaps)
+        if (inputXOffset != 0)
         {
-            if (tilemap.name == "Ground")
+            this.isMoving = true;
+            float realXOffset = inputXOffset * Time.fixedDeltaTime * this.xSpeed;
+            float horizontalDisplacement = this.grid.cellSize.x * realXOffset;
+
+            Vector3 currentCellPosition = grid.WorldToCell(this.transform.position);
+            float nextXPosition = currentCellPosition.x + grid.cellSize.x * horizontalDisplacement;
+
+            if (nextXPosition >= this.groundTilemap.localBounds.min.x - 1
+                && nextXPosition < this.groundTilemap.localBounds.max.x)
             {
-                this.groundTilemap = tilemap;
-                continue;
-            }
-            if (tilemap.name == "Buildings")
-            {
-                this.buildingsTilemap = tilemap;
-                continue;
+                this.nextCellPosition = new Vector3(
+                            nextXPosition,
+                            currentCellPosition.y,
+                            currentCellPosition.z);
+                this.transform.Translate(horizontalDisplacement, 0, 0);
             }
         }
-        Vector3 currentCellPosition = grid.WorldToCell(this.transform.position);
-        this.SetPlayerPosition(currentCellPosition);
-    }
+        else if (inputYOffset != 0)
+        {
+            this.isMoving = true;
+            float realYOffset = inputYOffset * Time.fixedDeltaTime * this.ySpeed;
+            float verticalDisplacement = this.grid.cellSize.y * realYOffset;
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (this.movementType == MovementType.NonContinuous)
-            this.NonContinuousMovement();
-        else if (this.movementType == MovementType.Continuous)
-            this.ContinuousMovement();
+            Vector3 currentCellPosition = grid.WorldToCell(this.transform.position);
+            float nextYPosition = currentCellPosition.y + grid.cellSize.y * verticalDisplacement;
+
+            if (nextYPosition >= this.groundTilemap.localBounds.min.y
+                && nextYPosition < this.groundTilemap.localBounds.max.y)
+            {
+                this.nextCellPosition = new Vector3(
+                            currentCellPosition.x,
+                            currentCellPosition.y + grid.cellSize.y * verticalDisplacement,
+                            currentCellPosition.z);
+                this.transform.Translate(0, verticalDisplacement, 0);
+            }
+        }
+        else
+        {
+            this.isMoving = false;
+        }
     }
 }
