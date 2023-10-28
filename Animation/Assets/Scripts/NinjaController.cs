@@ -13,17 +13,20 @@ public class NinjaController : MonoBehaviour
     public float height;
     [SerializeField] private float ySpeed;
     [SerializeField] private bool jumping;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         this.jumping = true;
+        this.animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         float xInputOffset = Input.GetAxis("Horizontal");
+
         if (this.jumping)
         {
             this.ySpeed -= this.gravity * Time.deltaTime;
@@ -38,6 +41,8 @@ public class NinjaController : MonoBehaviour
         }
 
         float xDisplacement = xInputOffset * this.xSpeed * Time.deltaTime;
+        bool run = Mathf.Abs(xDisplacement) > 0;
+        this.animator.SetBool("Running", run);
         float yDisplacement = this.ySpeed * Time.deltaTime;
 
         Vector3 newPosition = new Vector3(
@@ -52,13 +57,10 @@ public class NinjaController : MonoBehaviour
         if (collision.collider.CompareTag("Ground"))
         {
             Transform colliderObject = collision.collider.gameObject.transform;
-
-            Debug.Log(this.height);
-            Debug.Log(colliderObject.lossyScale.y);
             this.ySpeed = 0;
             this.transform.position = new Vector3(
                 this.transform.position.x,
-                colliderObject.position.y + (this.height) / 2,
+                colliderObject.position.y + this.height / 2,
                 this.transform.position.z);
             this.jumping = false;
         }
