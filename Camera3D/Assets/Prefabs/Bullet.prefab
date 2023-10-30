@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4942926140634922092}
   - component: {fileID: 802750314305479613}
   - component: {fileID: 6769407984990398844}
+  - component: {fileID: 4316621135883349295}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -105,3 +106,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4316621135883349295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8744983315459696618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3bf89acaf4afcc783322502d5dd185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootSpeed: 10
+  direction: {x: 0, y: 0, z: 0}
+  maxX: 10
+  maxY: 10
+  minY: 0
+  maxZ: 10

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject bulletPrefab;
+    public int bulletPoolSize;
     [SerializeField] private float eyeSpeed;
     private Quaternion baseOrientation;
     private float mouseH;
     private float mouseV;
+    private ObjectPool bulletPool;
 
-    // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -17,9 +19,9 @@ public class PlayerController : MonoBehaviour
         this.baseOrientation = this.transform.localRotation;
         this.mouseV = 0;
         this.mouseH = 0;
+        this.bulletPool = new ObjectPool(bulletPrefab, bulletPoolSize);
     }
 
-    // Update is called once per frame
     void Update()
     {
         this.mouseH += Input.GetAxis("Mouse X");
@@ -36,6 +38,21 @@ public class PlayerController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            this.Shoot();
+        }
+    }
+
+    private void Shoot()
+    {
+        GameObject newShoot = this.bulletPool.GetFromPool();
+        if (newShoot != null)
+        {
+            newShoot.transform.position = this.transform.position;
+            newShoot.GetComponent<BulletController>().direction = this.transform.forward;
         }
     }
 }
